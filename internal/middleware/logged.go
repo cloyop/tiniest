@@ -15,7 +15,7 @@ func Logged(hf func(w http.ResponseWriter, r *http.Request, s types.Session)) ht
 				w.WriteHeader(http.StatusForbidden)
 				return
 			} else {
-				http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+				http.Redirect(w, r, "/sign", http.StatusTemporaryRedirect)
 				return
 			}
 		}
