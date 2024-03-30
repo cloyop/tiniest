@@ -1,0 +1,39 @@
+package helpers
+
+templ Email_FP_Verification_Form(uid string) {
+	<div class="flex flex-col items-center justify-center gap-2 w-5/6 xs:w-4/6  md:w-5/6 lg:w-4/6  h-5/6  bg-bluer rounded-3xl py-6 shadow-b-outer |  md:w-4/6 md:py-12">
+		<form class="flex flex-col justify-center items-center gap-4 w-3/5" hx-indicator="#loader" hx-post={ "/user/forgot-password?u=" + uid }>
+			<label class="w-full flex flex-col gap-2 justify-center items-center">
+				<p class="text-lg">Verification Code</p>
+				<input class="w-11/12 h-9 rounded-lg bg-slate-900 pl-4 text-xs" type="text" name="code" required placeholder="Email Code" maxlength="6" minlength="6" autocomplete="off"/>
+			</label>
+			<label class="w-full flex flex-col gap-2 justify-center items-center">
+				<p class="text-lg">New Password</p>
+				<input class="w-11/12 h-9 rounded-lg bg-slate-900 pl-4 text-xs" type="text" name="new-password" required placeholder="New Password" autocomplete="off"/>
+			</label>
+			<button class="w-3/6 h-8 rounded-lg bg-aqua-light text-sm text-blue-dk font-semibold">Submit</button>
+		</form>
+		<div id="counter-box" class="flex justify-center items-center w-3/5">
+			@ForgotPassword_Counter(uid)
+		</div>
+		@Loader("loader")
+	</div>
+}
+
+templ ForgotPassword_E_Getter() {
+	<div class="flex flex-col items-center justify-center w-5/6 xs:w-4/6  md:w-5/6 lg:w-4/6  h-5/6  bg-bluer rounded-3xl py-6 shadow-b-outer |  md:w-4/6 md:py-12">
+		<form class="flex flex-col justify-center items-center gap-4 w-3/5" hx-target="#main" hx-indicator="#loader" hx-get="/user/forgot-password">
+			<label class="flex flex-col items-center jutify-center gap-2 w-11/12">
+				<span class="text-lg">Email:</span>
+				<input class="w-full h-9 rounded-lg bg-slate-900 pl-4 text-xs" type="email" name="email" required placeholder="email" autocomplete="off"/>
+			</label>
+			<button class="w-3/6 h-8 rounded-lg bg-aqua-light text-sm text-blue-dk font-semibold">Send Code</button>
+			@Loader("loader")
+		</form>
+	</div>
+}
+
+templ ForgotPassword_Counter(uid string) {
+	<button hx-put={ "/user/forgot-password?u=" + uid } hx-target="#counter-box" hx-indicator="#loader" hx-swap="innerHTML" id="counter" class="w-2/6 h-8 rounded-lg bg-aqua-light text-sm text-blue-dk font-semibold" disabled>2:00</button>
+	<script defer src="../static/js/count.js"></script>
+}

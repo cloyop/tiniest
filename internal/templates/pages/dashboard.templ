@@ -1,0 +1,81 @@
+package pages
+
+import "github.com/cloyop/tiniest/internal/templates/shared"
+import "github.com/cloyop/tiniest/internal/types"
+import "github.com/cloyop/tiniest/internal/templates/helpers"
+import "github.com/cloyop/tiniest/internal/templates/partials"
+import "time"
+
+templ Dashboard(s *types.Session,pairs []types.PairLinks) {
+	@shared.Page("Tiniest") {
+		<body class="w-full h-screen flex flex-col items-center mx-auto p-2">
+			if time.Since(time.Unix(s.User.Joined_Date,0)) <= time.Second * 20 {
+				<div class="flex justify-between items-center w-8/12 h-16 absolute top-2 bg-bluer  font-semibold p-2 shadow-b-outer2 rounded-lg text-aqua-light-2">
+					<p>This service is completely free, to start you have 10 maximum links that will increase monthly by 5 extra links</p>
+					<button onclick="this.parentElement.remove()">✖</button>
+				</div>
+			}
+			@dashMenu()
+			@dashHeader(s.User.Name, s.User.Avatar_url)
+			<main id="main" class="flex w-full grow flex-col overflow-hidden items-center">
+				<div class="w-full h-10"></div>
+				<div class="w-full h-24 flex items-center justify-center p-4">
+					<button class="w-40 h-10 text-blue-dk font-semibold rounded-lg shadow-b-outer2 bg-aqua-light p-2" data-form="open">
+						New URL
+					</button>
+				</div>
+				<div class="w-full flex justify-center p-2">
+					@helpers.Loader("link-loader")
+				</div>
+				<div class="w-full grow p-4 overflow-hidden">
+					<div class="p-2 w-full h-full shadow-b-outer2 border border-aqua-light-3 rounded-lg">
+						<section class="flex flex-col gap-2.5 items-center p-4 h-full overflow-y-auto scroller">
+							if len(pairs) < 1 {
+								<p id="nl" class="p-2">No Links Created</p>
+							}
+							<section id="urls" class="grid grid-cols-1 md:grid-cols-2 justify-center items-start w-full xl:grid-cols-3 h-auto gap-2">
+								for _,p:= range pairs {
+									@partials.Link_Item(&p)
+								}
+							</section>
+						</section>
+					</div>
+				</div>
+				<section id="f-c" class="hidden z-20 bg-black-opac absolute top-0 right-0 left-0 bottom-0 w-full h-full flex flex-col items-center justify-center">
+					<div class="flex flex-col justify-center items-center gap-4 w-11/12 sm:w-8/12 md:w-6/12 lg:w-5/12 p-2 bg-bluer shadow-b-outer2 rounded-lg">
+						<span class="text-2xl font-bold text-aqua-light-2 p-2">
+							Generate New Url
+						</span>
+						<div class="flex flex-col w-full items-center p-4 gap-2">
+							<div class="min-h-8 w-full px-4 flex justify-center items-center"></div>
+							@partials.DashNewLinkForm()
+						</div>
+					</div>
+				</section>
+			</main>
+			<script defer src="static/js/dashboard.js"></script>
+		</body>
+	}
+}
+
+templ dashHeader(name, avatar_url string) {
+	<header class="flex justify-between items-center h-14 px-4 w-full">
+		<div>
+			<a href="/" class="text-3xl font-bold ">
+				<span class="text-aqua-light">TINI</span>EST
+			</a>
+		</div>
+		<button id="menu-opener" data-menu class="flex justify-center items-center gap-4 py-2 px-2.5 rounded-lg ">
+			<div class="hidden md:block" data-menu>{ name }</div>
+			<img data-menu class="w-9 h-9 rounded-full" src={ avatar_url }/>
+		</button>
+	</header>
+}
+
+templ dashMenu() {
+	<div id="menu" class="hidden absolute top-20 right-3.5 bg-blue-dk w-60 border border-aqua-light-3 rounded-lg z-30">
+		<a class="flex justify-center items-center w-full p-2 h-12 hover:bg-bluer cursor-pointer rounded-t-lg" href="/dashboard/account">Account Settings</a>
+		<div class="w-full border border-aqua-light-3"></div>
+		<button class="w-full p-2 h-12 hover:bg-bluer rounded-b-lg" type="button" hx-post="/user/signout" hx-swap="none">Sign Out</button>
+	</div>
+}

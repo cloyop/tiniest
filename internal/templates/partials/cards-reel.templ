@@ -1,0 +1,90 @@
+package partials
+
+import "github.com/cloyop/tiniest/internal/templates/helpers"
+
+templ CardsReel() {
+	<section class="flex w-full lg:w-11/12 items-center justify-center py-2">
+		<div class="w-full grid gap-2 grid-cols-2 grid-rows-2 | md:flex justify-evenly  ">
+			// Copy
+			@cardContainer() {
+				@cardHeader() {
+					<span>
+						@helpers.CopyCardSVG()
+					</span>
+					<p>
+						URL Shortener
+					</p>
+				}
+				@cardBody() {
+					<p>Turn your long and tedious links into short and accessible ones without expiration time.</p>
+				}
+			}
+			// QR
+			@cardContainer() {
+				@cardHeader() {
+					<span>
+						@helpers.QRCardSVG()
+					</span>
+					<p>
+						QR Codes
+					</p>
+				}
+				@cardBody() {
+					<p>
+						Generate QR codes with your link to share with anyone.
+					</p>
+				}
+			}
+			// Protect
+			@cardContainer() {
+				@cardHeader() {
+					<span>
+						@helpers.ProtectCardSVG()
+					</span>
+					<p>
+						Protected Routes
+					</p>
+				}
+				@cardBody() {
+					<p>
+						Protect your links with password so that only the people you want can access.
+					</p>
+				}
+			}
+			@cardContainer() {
+				@cardHeader() {
+					<span>
+					
+						@helpers.TrackingSVG()
+					</span>
+					<p>
+						Real-time Tracking
+					</p>
+				}
+				@cardBody() {
+					<p>
+						Real-time tracking of your links and their interactions. Such the location, date, time and qr used.
+					</p>
+				}
+			}
+		</div>
+	</section>
+}
+
+templ cardContainer() {
+	<article class="flex flex-col items-center gap-4 px-4 py-6 lg:w-52 md:w-40 min-h-52 min-w-40 font-bold text-sm rounded-xl border border-aqua-light-2 text-aqua-light shadow-b-outer2">
+		{ children... }
+	</article>
+}
+
+templ cardHeader() {
+	<header class="flex flex-col gap-2 justify-start items-center w-full">
+		{ children... }
+	</header>
+}
+
+templ cardBody() {
+	<article class="w-full text-center text-white text-xs tracking-wider">
+		{ children... }
+	</article>
+}

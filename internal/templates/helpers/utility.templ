@@ -1,0 +1,33 @@
+package helpers
+
+
+
+templ RequestErrors(errors []string) {
+	<div class="flex flex-col border border-aqua-light-3 bg-blue-dk justify-center items-center rounded-2xl p-2 px-4 gap-2 | z-20">
+		if len(errors) > 1 {
+			<ul>
+				for _,e := range errors {
+					<li class="text-base text-left">{ e }</li>
+				}
+			</ul>
+		} else {
+			<p class="text-sm ">
+				{ errors[0] }
+			</p>
+		}
+	</div>
+}
+
+templ SingleError(err string) {
+	<div class="flex flex-col border border-aqua-light-3 bg-blue-dk justify-center  items-center rounded-2xl p-2 |  z-20">
+		<p class="text-sm ">
+			{ err }
+		</p>
+	</div>
+}
+
+templ OverAllContainer() {
+	<section data-overall class="w-full h-full flex flex-col justify-center items-center z-20 bg-black-opac absolute top-0 right-0 left-0 bottom-0">
+		{ children... }
+	</section>
+}

@@ -1,0 +1,91 @@
+package partials
+
+import "github.com/cloyop/tiniest/internal/types"
+import "github.com/cloyop/tiniest/internal/templates/helpers"
+
+templ TrackingPair(key string ,visits []types.Visit ,dates,from map[string]templ.Component ) {
+	<section data-overall class="w-full h-full flex flex-col justify-center items-center z-20 bg-black-opac absolute top-0 right-0 left-0 bottom-0 py-8 px-3">
+		<div class="flex flex-col items-center w-full md:w-10/12 h-full rounded-lg shadow-b-outer2 overflow-hidden bg-bluer p-2">
+			<div class="w-full flex justify-end p-px">
+				<button type="button" data-xx>❌</button>
+			</div>
+			<div class="w-full flex flex-col justify-center items-center gap-2 py-2">
+				<form class="flex justify-center items-center flex-wrap gap-2 min-w-80" hx-post={ "/pair/filter?key=" + key } hx-indicator="#filter-loader" hx-swap="outerHTML" hx-target="#visits" hx-trigger="change" id="filter-form">
+					@FilterSelect("date-filter") {
+						<option class="p-2 bg-blue-dk rounded-lg" value="">Date</option>
+						for _, v := range dates {
+							@v
+						}
+					}
+					@FilterSelect("from-filter") {
+						<option class="p-2 bg-blue-dk rounded-lg" value="">From</option>
+						for _, v := range from {
+							@v
+						}
+					}
+					@FilterSelect("qr-filter") {
+						<option class="p-2 bg-blue-dk rounded-lg" value="">Qr</option>
+						@Opt("true")
+						@Opt("false")
+					}
+					<button type="button" id="filter-reset" hx-post={ "/pair/filter?key=" + key } class="w-36 h-9 flex justify-center items-center bg-bluer border border-aqua-light-3 rounded-lg hover:border-2 text-aqua-light-2" hx-indicator="#filter-loader" hx-target="#visits" hx-swap="outerHTML">✖</button>
+				</form>
+				@helpers.Loader("filter-loader")
+			</div>
+			<div class="w-full grow p-2 overflow-y-auto scroller">
+				<table class="table-auto md:table-fixed w-full text-xs">
+					<thead>
+						<tr class="text-base text-aqua-light-2">
+							<th class="w-36">Date</th>
+							<th class="px-2 hidden md:table-cell text-left">Title</th>
+							<th class="w-16 px-2">Key</th>
+							<th class="w-40 px-2">Location</th>
+							<th class="w-12 hidden md:table-cell">QR</th>
+						</tr>
+					</thead>
+					@TableTrackingBody(visits)
+				</table>
+			</div>
+		</div>
+	</section>
+}
+
+templ TableTrackingBody(visits []types.Visit) {
+	<tbody id="visits">
+		for _,v := range visits {
+			@VisitsTableRow(&v)
+		}
+	</tbody>
+}
+
+templ VisitsTableRow(v *types.Visit) {
+	<tr class="odd:bg-blue-dk py-2 h-8">
+		<td class="w-30 text-center px-2">{ v.Date } { v.Date_hour }</td>
+		<td class="px-2 truncate hidden md:table-cell">
+			if v.Title != "" {
+				{ v.Title }
+			} else {
+				{ v.Url_visited }
+			}
+		</td>
+		<td class="w-16 text-center px-2">{ v.Key }</td>
+		<td class="w-36 text-center">{ v.Visit_from }</td>
+		<td class="w-12 text-center hidden md:table-cell">
+			if v.Qr {
+				True
+			} else {
+				False
+			}
+		</td>
+	</tr>
+}
+
+templ Opt(value string) {
+	<option class="p-2 bg-blue-dk rounded-lg w-12" value={ value }>{ value }</option>
+}
+
+templ FilterSelect(name string) {
+	<select name={ name } class="h-9 w-36 xs:w-44 bg-blue-dk border border-aqua-light-3 px-2 text-center rounded-lg">
+		{ children... }
+	</select>
+}

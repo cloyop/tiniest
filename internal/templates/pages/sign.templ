@@ -1,0 +1,37 @@
+package pages
+
+import "github.com/cloyop/tiniest/internal/templates/shared"
+import "github.com/cloyop/tiniest/internal/templates/partials"
+
+templ Sign(toLog bool, word string) {
+	@shared.Page("Tiniest") {
+		<body class="flex flex-col md:flex-row w-full h-screen">
+			// 
+			<section class="flex flex-col w-full | md:w-3/6 md:h-full">
+				@leftSide()
+			</section>
+			<section id="main" class="flex justify-center items-center w-full grow p-4 md:w-3/6 | h-full">
+				@partials.SignForm(toLog,word)
+			</section>
+			// 
+			<script defer src="static/js/sign.js"></script>
+		</body>
+	}
+}
+
+templ leftSide() {
+	<div class="flex h-24 w-full pl-0 md:pl-6 pt-4 justify-center md:justify-start">
+		<a href="/" class="text-6xl font-bold ">
+			<span class="text-aqua-light">TINI</span>EST
+		</a>
+	</div>
+	<div class="md:flex flex-col justify-center pl-6  w-full grow text-7xl italic | hidden">
+		<p class="pl-6">
+			Make your 
+		</p>
+		<p class="pl-28">
+			URL shorter...
+		</p>
+	</div>
+	<div class="w-full min-h-36 hidden md:block"></div>
+}

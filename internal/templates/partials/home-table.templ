@@ -1,0 +1,21 @@
+package partials
+
+import "github.com/cloyop/tiniest/internal/types"
+
+templ HeadUrlItem() {
+	<div class="hidden w-full sm:flex h-8 py-2 items-center font-bold">
+		<div class="flex items-center w-lg grow">URL</div>
+		<div class="flex items-center pl-2 min-w-48 ">Short</div>
+		<div class="flex items-center min-w-20 pl-2 justify-center">Date</div>
+		<div class="flex justify-center items-center w-cp">📃</div>
+	</div>
+}
+
+templ UrlItem(p *types.PairLinks) {
+	<div id={ p.Key } class="min-w-60 p-2 w-full flex flex-col text-sm border border-aqua-light-3 rounded-md font-light | sm:flex-row sm:p-0 ">
+		<div class="flex items-center py-px  sm:pl-2  w-full  grow truncate | sm:w-lg">{ p.Long }</div>
+		<div class="flex items-center py-px min-w-48 sm:pl-4 sm:justify-start">{ p.Short }</div>
+		<div class="flex items-center py-px min-w-20 sm:pl-2 sm:justify-center">{ p.ParsedDate() }</div>
+		<div class="flex items-center py-px w-cp sm:justify-center cursor-pointer" data-cp={ p.Short }>📃</div>
+	</div>
+}

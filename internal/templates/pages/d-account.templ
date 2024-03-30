@@ -1,0 +1,61 @@
+package pages
+
+import "github.com/cloyop/tiniest/internal/types"
+import "github.com/cloyop/tiniest/internal/templates/helpers"
+import "fmt"
+import "github.com/cloyop/tiniest/internal/templates/partials"
+
+templ DashBoard_Account(s *types.Session) {
+	<!DOCTYPE html>
+	<html lang="en" class="bg-blue-dk text-white">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<meta name="robots" content="index, follow"/>
+			<meta name="revisit-after" content="7 days"/>
+			<meta name="language" content="English"/>
+			<link rel="icon" href="../static/images/favicon.ico" type="image/x-icon"/>
+			<link rel="stylesheet" href="../static/css/style.css"/>
+			<title>Tiniest - { s.User.Name }</title>
+			<script src="../static/js/htmx.min.js"></script>
+		</head>
+		<body class="w-full h-screen flex flex-col items-center gap-2 p-4">
+			<header class="absolute left-4 ">
+				<a href="/dashboard">⬅</a>
+			</header>
+			<div class="w-full h-10"></div>
+			<div class="flex flex-col gap-4 justify-evenly w-full md:w-4/6 lg:w-3/6 p-4 rounded-xl bg-blue-dk grow">
+				<div class="flex justify-between w-full rounded-lg gap-4 p-2 border border-aqua-light-3">
+					<section class="hidden w-24 h-24 sm:block">
+						<img class="rounded-full w-full h-auto" src={ s.User.Avatar_url }/>
+					</section>
+					<div class="flex flex-col md:flex-row justify-between-between gap-4 grow text-aqua-light-3 text-sm">
+						<section class="flex justify-evenly flex-col gap-4 grow text-aqua-light-3 text-sm">
+							<p class="text-xl text-white">{ s.User.Name }</p>
+							<p>{ s.User.Email }</p>
+							<p>Joined Tiniest At { s.User.StringifyJoinedDate() }</p>
+						</section>
+						<div class="flex items-end">
+							<p>{ fmt.Sprint(s.User.LinksCount) } / { fmt.Sprint(s.User.MaxLinksCount) } Links</p>
+						</div>
+					</div>
+				</div>
+				<div id="ub" class="flex flex-col items-center w-full rounded-lg  py-2 border border-aqua-light-3">
+					@partials.PersonalInfo_Pre(s)
+				</div>
+				<div class="flex flex-col w-full rounded-lg gap-4 border border-aqua-light-3">
+					<div class="w-full text-lg border-b border-aqua-light-3 p-2">
+						<p>
+							Danger Zone
+						</p>
+					</div>
+					<div class="w-full flex justify-between items-center p-2">
+						@helpers.Loader("d-loader")
+						<button class="rounded-md font-medium text-white bg-red-950 w-36 h-8" type="button" hx-delete="/user/update" hx-indicator="#d-loader" hx-swap="none">Delete Account</button>
+					</div>
+				</div>
+			</div>
+			<script defer src="../static/js/dash-acc.js"></script>
+		</body>
+	</html>
+}

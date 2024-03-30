@@ -1,0 +1,28 @@
+package shared
+
+templ Page(title string) {
+	<!DOCTYPE html>
+	<html lang="en" class="bg-blue-dk text-white scroller">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<meta name="robots" content="index, follow"/>
+			<meta name="revisit-after" content="7 days"/>
+			<meta name="language" content="English"/>
+			@og()
+			<link rel="icon" href="/static/images/favicon.ico" type="image/x-icon"/>
+			<link rel="stylesheet" href="static/css/style.css"/>
+			<title>{ title }</title>
+			<script src="static/js/htmx.min.js"></script>
+		</head>
+		{ children... }
+	</html>
+}
+
+templ og() {
+    <meta property="og:title" content="Tiniest: Free Link Shortener" />
+    <meta property="og:description" content="Tiniest is a simple, free link shortener built with Golang, htmx, Tailwind CSS, and Turso DB. Try it today and experience the difference!" />
+    <meta property="og:url" content="https://tiniest.app" />
+    <meta property="og:image" content="https://tiniest.app/static/images/tiniestwall.webp" />
+    <meta property="og:type" content="website" />
+}

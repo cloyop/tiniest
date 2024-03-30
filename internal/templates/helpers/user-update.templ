@@ -1,0 +1,27 @@
+package helpers
+
+templ Update_Verification_Form() {
+	<form class="flex flex-col justify-center items-center gap-4 w-3/5" hx-target="#ub" hx-indicator="#loader" hx-post={ "/user/update?v=true" }>
+		<label class="w-full flex flex-col gap-2 justify-center items-center">
+			<p class="text-lg">Verification Code</p>
+			<input class="w-11/12 h-9 rounded-lg bg-slate-900 pl-4 text-xs" type="text" name="code" required placeholder="Email Code" maxlength="6" minlength="6" autocomplete="off"/>
+		</label>
+		<label class="w-full flex flex-col gap-2 justify-center items-center">
+			<p class="text-lg">Current password</p>
+			<input class="w-11/12 h-9 rounded-lg bg-slate-900 pl-4 text-xs" type="text" name="current-password" required placeholder="Current Password" autocomplete="off"/>
+		</label>
+		<button class="w-3/6 h-8 rounded-lg bg-aqua-light text-sm text-blue-dk font-semibold">Submit</button>
+	</form>
+	<div class="w-full h-4">
+		
+	</div>
+	<div id="counter-box" class="flex justify-center items-center w-3/5">
+		@User_Update_Counter()
+	</div>
+	@Loader("loader")
+}
+
+templ User_Update_Counter() {
+	<button hx-get={ "/user/update?temp=uu" } hx-target="#counter-box" hx-indicator="#loader" hx-swap="innerHTML" id="counter" class="w-2/6 h-8 rounded-lg bg-aqua-light text-sm text-blue-dk font-semibold" disabled>2:00</button>
+	<script defer src="../static/js/count.js"></script>
+}
