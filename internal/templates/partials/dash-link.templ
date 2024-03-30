@@ -14,7 +14,7 @@ templ Link_Item(p *types.PairLinks) {
 				}
 			</p>
 			<div>
-				<button class="h-full" data-pd hx-target={ "#" + p.Key  } hx-swap="delete" hx-delete={ "/pair?key=" + p.Key + "/" } hx-indicator="#link-loader">
+				<button class="h-full" data-pd hx-target={ "#" + p.Key  } hx-swap="delete" hx-delete={ "/pair/?key=" + p.Key } hx-indicator="#link-loader">
 					@helpers.DeleteSVG()
 				</button>
 			</div>

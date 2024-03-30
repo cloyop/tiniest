@@ -8,7 +8,7 @@ import (
 )
 
 func LoadHandlers(r *mux.Router) {
-	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("/assets/"))))
+	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./assets/"))))
 
 	userRoute := r.PathPrefix("/user").Subrouter()
 	pairRoute := r.PathPrefix("/pair").Subrouter()
