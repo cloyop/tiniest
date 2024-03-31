@@ -152,21 +152,23 @@ func pairFilter(w http.ResponseWriter, r *http.Request, s types.Session) {
 	queryext := ""
 	key := r.FormValue("key")
 	queryext += database.AddFilter("key", key)
-
-	if date := r.FormValue("date-filter"); date != "" {
-		queryext += database.AddFilter("date", date)
-	}
-	if from := r.FormValue("from-filter"); from != "" {
-		queryext += database.AddFilter("visit_from", from)
-	}
-	if qr := r.FormValue("qr-filter"); qr != "" {
-		if qr == "true" {
-			qr = "1"
-		} else {
-			qr = "0"
+	if r.FormValue("all") == "" {
+		if date := r.FormValue("date-filter"); date != "" {
+			queryext += database.AddFilter("date", date)
 		}
-		queryext += database.AddFilter("qr", qr)
+		if from := r.FormValue("from-filter"); from != "" {
+			queryext += database.AddFilter("visit_from", from)
+		}
+		if qr := r.FormValue("qr-filter"); qr != "" {
+			if qr == "true" {
+				qr = "1"
+			} else {
+				qr = "0"
+			}
+			queryext += database.AddFilter("qr", qr)
+		}
 	}
+
 	visits, _ := database.GetVisitsFiltered(s.User.Id, queryext)
 	if r.Method == "POST" {
 		response(w, r, partials.TableTrackingBody(*visits), http.StatusOK)

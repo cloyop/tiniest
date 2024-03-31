@@ -28,7 +28,7 @@ templ TrackingPair(key string ,visits []types.Visit ,dates,from map[string]templ
 						@Opt("true")
 						@Opt("false")
 					}
-					<button type="button" id="filter-reset" hx-post={ "/pair/filter?key=" + key } class="w-36 h-9 flex justify-center items-center bg-bluer border border-aqua-light-3 rounded-lg hover:border-2 text-aqua-light-2" hx-indicator="#filter-loader" hx-target="#visits" hx-swap="outerHTML">✖</button>
+					<button type="button" id="filter-reset" hx-post={ "/pair/filter?all=true&key=" + key } class="w-36 h-9 flex justify-center items-center bg-bluer border border-aqua-light-3 rounded-lg hover:border-2 text-aqua-light-2" hx-indicator="#filter-loader" hx-target="#visits" hx-swap="outerHTML">✖</button>
 				</form>
 				@helpers.Loader("filter-loader")
 			</div>
