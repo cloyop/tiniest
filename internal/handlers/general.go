@@ -56,7 +56,7 @@ func redirect(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if !exists {
-		fmt.Fprintln(w, "Cant Found This Route")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
 	switch r.Method {
