@@ -128,7 +128,6 @@ func signForm(w http.ResponseWriter, r *http.Request) {
 		}
 		if OAM == "goo" {
 			s := types.GoogleOauthStr(os.Getenv("OAUTH_STATE"))
-			fmt.Println(s)
 			http.Redirect(w, r, s, http.StatusSeeOther)
 			return
 		}
