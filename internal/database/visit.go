@@ -20,7 +20,7 @@ func DeleteAllViewFromUser(user_id string) error {
 }
 func GetAllVisitsFromOwnerID(user_id string) (*[]types.Visit, error) {
 	var visits []types.Visit
-	query := `SELECT * FROM visits WHERE user_owner = ?`
+	query := `SELECT * FROM visits WHERE user_owner = ? ORDER BY date_timestamp DESC`
 	rows, err := db.Query(query, user_id)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -34,12 +34,11 @@ func GetAllVisitsFromOwnerID(user_id string) (*[]types.Visit, error) {
 		rows.Scan(&v.Key, &v.Title, &v.Visit_from, &v.Url_visited, &v.User_owner, &v.Qr, &v.DateTimestamp, &v.Date, &v.Date_hour)
 		visits = append(visits, v)
 	}
-	visits = reverserVists(visits)
 	return &visits, nil
 }
 func GetVisitsFiltered(user_id, ext string) (*[]types.Visit, error) {
 	var visits []types.Visit
-	str := fmt.Sprintf("SELECT * FROM visits WHERE user_owner = '%v' %v", user_id, ext)
+	str := fmt.Sprintf("SELECT * FROM visits WHERE user_owner = '%v' %v ORDER BY date_timestamp DESC", user_id, ext)
 	rows, err := db.Query(str)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -52,18 +51,8 @@ func GetVisitsFiltered(user_id, ext string) (*[]types.Visit, error) {
 		rows.Scan(&v.Key, &v.Title, &v.Visit_from, &v.Url_visited, &v.User_owner, &v.Qr, &v.DateTimestamp, &v.Date, &v.Date_hour)
 		visits = append(visits, v)
 	}
-	visits = reverserVists(visits)
 	return &visits, nil
 }
 func AddFilter(name, value string) string {
 	return fmt.Sprintf(` AND %v="%v"`, name, value)
-}
-func reverserVists(s []types.Visit) []types.Visit {
-	ss := make([]types.Visit, len(s))
-	sl := len(s) - 1
-	for i := 0; i < len(s); i++ {
-		ss[i] = s[sl]
-		sl--
-	}
-	return ss
 }
